@@ -23,6 +23,8 @@ matrix:
       env: OS_TYPE=centos OS_VERSION=6
     - os: linux
       env: OS_TYPE=centos OS_VERSION=7
+    - os: linux
+      env: OS_TYPE=opensuse OS_VERSION=42.3
 
 before_install:
   - .travis/before_install
