@@ -23,9 +23,9 @@ elif [ "$OS_TYPE" = "opensuse" ]; then
     install_autogen_reqs="
         zypper install -y --no-recommends libtool rpm-build
     "
-    install_configure_reqs="
-        zypper install -y --no-recommends $(rpmspec -q --buildrequires singularity.spec)
-    "
+    install_configure_reqs='
+        zypper install -y --no-recommends $(rpmspec -q --buildrequires --qf "[%{REQUIRENAME} ]" singularity.spec)
+    '
     install_test_reqs="
         zypper install -y --no-recommends python3 python3-pip python3-setuptools docker
         zypper install -y --no-recommends python3-pylint
