@@ -41,8 +41,8 @@ eval "$install_autogen_reqs"
 eval "$install_configure_reqs"
 ./configure
 make dist
-rpmbuild -ta "*.tar.gz"
-rpm -iv "/usr/src/packages/RPMS/*/*.rpm"
+rpmbuild -ta *.tar.gz
+rpm -iv /usr/src/packages/RPMS/*/*.rpm
 
 if [ "$OS_TYPE" = "centos" ] && [ "$OS_VERSION" = 6 ]; then
     echo "the test suite has not yet been ported to centos6 python, skipping."
