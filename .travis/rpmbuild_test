@@ -50,10 +50,6 @@ else
     exit 1
 fi
 
-if [ "$OS_TYPE" = "centos" ] && [ "$OS_VERSION" = 6 ]; then
-    yum install -y rpmspec
-fi
-
 eval "$install_autogen_reqs"
 ./autogen.sh
 eval "$install_configure_reqs"
