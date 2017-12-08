@@ -45,6 +45,7 @@ eval "$install_configure_reqs"
 ./configure
 make dist
 rpmbuild -ta *.tar.gz
+eval "$install_runtime_reqs"
 rpm -iv /usr/src/packages/RPMS/*/*.rpm
 
 if [ "$OS_TYPE" = "centos" ] && [ "$OS_VERSION" = 6 ]; then
