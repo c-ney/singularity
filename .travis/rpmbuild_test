@@ -7,30 +7,30 @@ OS_VERSION="$2"
 
 # build and install
 if [ "$OS_TYPE" = "centos" ]; then
-    install_autogen_reqs="
+    install_autogen_reqs='
         yum install -y libtool rpm-build make yum-utils
-    "
-    install_configure_reqs="
+    '
+    install_configure_reqs='
         yum-builddep singularity.spec
-    "
-    install_test_reqs="
+    '
+    install_test_reqs='
         yum install -y epel-release
         yum install -y python34 python34-pip python34-setuptools docker
         yum install -y pylint
         yum install -y sudo which e2fsprogs
-    "
+    '
 elif [ "$OS_TYPE" = "opensuse" ]; then
-    install_autogen_reqs="
+    install_autogen_reqs='
         zypper install -y --no-recommends libtool rpm-build
-    "
+    '
     install_configure_reqs='
         zypper install -y --no-recommends $(rpmspec -q --buildrequires --qf "[%{REQUIRENAME} ]" singularity.spec)
     '
-    install_test_reqs="
+    install_test_reqs='
         zypper install -y --no-recommends python3 python3-pip python3-setuptools docker
         zypper install -y --no-recommends python3-pylint
         zypper install -y --no-recommends sudo which e2fsprogs
-    "
+    '
 else
     echo "Cannot rpmbuild on $OS_TYPE"
     exit 1
@@ -41,8 +41,8 @@ eval "$install_autogen_reqs"
 eval "$install_configure_reqs"
 ./configure
 make dist
-rpmbuild -ta *.tar.gz
-rpm -iv ~/rpmbuild/RPMS/*/*.rpm
+rpmbuild -ta "*.tar.gz"
+rpm -iv "/usr/src/packages/RPMS/*/*.rpm"
 
 if [ "$OS_TYPE" = "centos" ] && [ "$OS_VERSION" = 6 ]; then
     echo "the test suite has not yet been ported to centos6 python, skipping."
