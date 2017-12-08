@@ -72,6 +72,9 @@ echo "testuser ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 sed -i 's,^prefix=.*,prefix=/usr,' secbuildimg.sh
 sed -i 's,^sysconfdir=.*,sysconfdir=/etc,' secbuildimg.sh
 sed -i 's,^localstatedir=.*,localstatedir=/var,' secbuildimg.sh
+if [ "$OS_TYPE" = "opensuse" ]; then
+    sed -ir 's,(^libexecdir=.*)/.*,\1/lib",' secbuildimg.sh
+fi
 make secbuildimg
 
 su testuser -c "make test"
