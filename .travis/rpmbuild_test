@@ -7,6 +7,7 @@ OS_VERSION="$2"
 
 # build and install
 if [ "$OS_TYPE" = "centos" ]; then
+    rpms_dir='/root/rpmbuild/RPMS'
     install_autogen_reqs='
         yum install -y libtool rpm-build make yum-utils
     '
@@ -20,6 +21,7 @@ if [ "$OS_TYPE" = "centos" ]; then
         yum install -y sudo which e2fsprogs
     '
 elif [ "$OS_TYPE" = "opensuse" ]; then
+    rpms_dir='/usr/src/packages/RPMS'
     install_autogen_reqs='
         zypper install -y --no-recommends libtool rpm-build
     '
@@ -46,7 +48,7 @@ eval "$install_configure_reqs"
 make dist
 rpmbuild -ta *.tar.gz
 eval "$install_runtime_reqs"
-rpm -iv /usr/src/packages/RPMS/*/*.rpm
+rpm -iv "$rpms_dir"/*/*.rpm
 
 if [ "$OS_TYPE" = "centos" ] && [ "$OS_VERSION" = 6 ]; then
     echo "the test suite has not yet been ported to centos6 python, skipping."
