@@ -37,7 +37,7 @@ elif [ "$OS_TYPE" = "opensuse" ]; then
         zypper install -y --no-recommends sudo which e2fsprogs
     '
     install_rpms='
-        zypper install -y \
+        zypper --no-gpg-checks install -y --no-recommends \
     '
 else
     echo "Cannot rpmbuild on $OS_TYPE"
