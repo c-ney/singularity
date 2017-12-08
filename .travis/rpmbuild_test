@@ -23,6 +23,9 @@ if [ "$OS_TYPE" = "centos" ]; then
         yum install -y pylint
         yum install -y sudo which e2fsprogs
     '
+    install_rpms='
+        yum localinstall -y
+    '
 elif [ "$OS_TYPE" = "opensuse" ]; then
     rpms_dir='/usr/src/packages/RPMS'
     install_autogen_reqs='
@@ -39,9 +42,16 @@ elif [ "$OS_TYPE" = "opensuse" ]; then
         zypper install -y --no-recommends python3-pylint
         zypper install -y --no-recommends sudo which e2fsprogs
     '
+    install_rpms='
+        zypper install -y
+    '
 else
     echo "Cannot rpmbuild on $OS_TYPE"
     exit 1
+fi
+
+if [ "$OS_TYPE" = "centos" ] && [ "$OS_VERSION" = 6 ]; then
+    yum install -y rpmspec
 fi
 
 eval "$install_autogen_reqs"
@@ -50,8 +60,8 @@ eval "$install_configure_reqs"
 ./configure
 make dist
 rpmbuild -ta *.tar.gz
-eval "$install_runtime_reqs"
-rpm -iv "$rpms_dir"/*/*.rpm
+#eval "$install_runtime_reqs"
+eval "$install_rpms" "$rpms_dir"/*/*.rpm
 
 if [ "$OS_TYPE" = "centos" ] && [ "$OS_VERSION" = 6 ]; then
     echo "the test suite has not yet been ported to centos6 python, skipping."
