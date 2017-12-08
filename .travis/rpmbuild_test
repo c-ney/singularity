@@ -34,7 +34,7 @@ elif [ "$OS_TYPE" = "opensuse" ]; then
         zypper install -y --no-recommends sudo which e2fsprogs
     '
     install_runtime_reqs='
-        zypper install -y --no-recommends $(rpmspec -q --requires --qf "[%{REQUIRENAME} ]" singularity.spec)
+        zypper -i install -y --no-recommends $(rpmspec -q --requires --qf "[%{REQUIRENAME} ]" singularity.spec)
     '
 else
     echo "Cannot rpmbuild on $OS_TYPE"
