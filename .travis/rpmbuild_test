@@ -21,7 +21,7 @@ if [ "$OS_TYPE" = "centos" ]; then
         yum install -y sudo which e2fsprogs
     '
     install_rpms='
-        yum localinstall -y \
+        yum install -y \
     '
 elif [ "$OS_TYPE" = "opensuse" ]; then
     rpms_dir='/usr/src/packages/RPMS'
@@ -50,7 +50,6 @@ eval "$install_configure_reqs"
 ./configure
 make dist
 rpmbuild -ta *.tar.gz
-#eval "$install_runtime_reqs"
 eval "$install_rpms" "$rpms_dir"/*/*.rpm
 
 if [ "$OS_TYPE" = "centos" ] && [ "$OS_VERSION" = 6 ]; then
