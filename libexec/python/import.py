@@ -57,6 +57,9 @@ def main():
     image_uri = get_image_uri(container, quiet=True)
     container = remove_image_uri(container)
 
+    print(os.environ['SINGULARITY_CONTAINER'])
+    print(image_uri)
+
     ########################################################################
     # Docker Image #########################################################
     ########################################################################
@@ -100,6 +103,7 @@ def main():
                labelfile=LABELFILE)
 
     else:
+        print('else')
         bot.error("uri %s is not supported for import. Exiting."
                   % (image_uri))
         sys.exit(1)
