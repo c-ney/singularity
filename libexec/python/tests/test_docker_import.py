@@ -62,6 +62,9 @@ class TestImport(TestCase):
     def test_IMPORT(self):
         '''test_import will test the IMPORT USER function
         '''
+
+        print(os.environ["SINGULARITY_CONTAINER"])
+
         script_path = "%s/import.py" % self.here
         if VERSION == 2:
             testing_command = ["python2", script_path]

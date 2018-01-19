@@ -54,7 +54,6 @@ def main():
     '''
 
     container = getenv("SINGULARITY_CONTAINER", required=True)
-    print(container)
     image_uri = get_image_uri(container, quiet=True)
     container = remove_image_uri(container)
 
