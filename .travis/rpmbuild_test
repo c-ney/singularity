@@ -79,6 +79,6 @@ if [ "$OS_TYPE" = "opensuse" ]; then
 fi
 make secbuildimg
 
-printenv SINGULARITY_CONTAINER
-printenv SINGULARITY_CONTENTS
+#printenv SINGULARITY_CONTAINER
+#printenv SINGULARITY_CONTENTS
 su testuser -c "make test"
