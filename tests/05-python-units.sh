@@ -61,7 +61,7 @@ else
 fi
 
 if which pylint >/dev/null 2>&1; then
-    stest 0 pylint $PWD --errors-only --ignore tests  --disable=E0401,E0611,E1101
+    stest 0 pylint $PWD --errors-only --ignore tests  --disable=E0401,E0611,E1101,E0602
 else
     echo "Skipping pylint tests: not installed"
 fi

@@ -35,6 +35,7 @@ elif [ "$OS_TYPE" = "opensuse" ]; then
         zypper install -y --no-recommends python3 python3-pip python3-setuptools docker
         zypper install -y --no-recommends python3-pylint
         zypper install -y --no-recommends sudo which e2fsprogs
+        zypper install -y --no-recommends curl
     '
     install_rpms='
         zypper --no-gpg-checks install -y --no-recommends \
