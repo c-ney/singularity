@@ -1,0 +1,8 @@
+#!/bin/bash -ex
+
+# this file contains amendments for opensuse 42.3
+
+# source shared commands for OPENSUSE
+if [[ -e opensuse_deps ]]; then
+    source opensuse_deps
+fi

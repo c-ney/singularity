@@ -1,0 +1,27 @@
+#!/bin/bash -ex
+
+# this file contains commands that are shared between OPENSUSE versions
+
+rpms_dir='/usr/src/packages/RPMS'
+
+auto_deps=(libtool rpm-build)
+test_deps=(python3 python3-pip python3-setuptools docker
+           python3-pylint
+           sudo which e2fsprogs
+           curl tar)
+
+install_autogen_deps () {
+    zypper install -y --no-recommends ${auto_deps[*]}
+}
+
+install_configure_deps () {
+    zypper install -y --no-recommends $(rpmspec -q --buildrequires --qf "[%{REQUIRENAME} ]" singularity.spec)
+}
+
+install_rpms () {
+    zypper --no-gpg-checks install -y --no-recommends "$rpms_dir"/*/*.rpm
+}
+
+install_test_deps () {
+    zypper install -y --no-recommends ${test_deps[*]}
+}

@@ -2,32 +2,46 @@
 
 # this script runs as root under docker
 
-OS_VERSION="$1"
+# shellcheck source=/dev/null
+
+OS_TYPE="$1"
+OS_VERSION="$2"
+
+deps_file="deps/${OS_TYPE}_${OS_VERSION}_deps"
+
+if [[ -e "${deps_file}" ]]; then
+    source "${deps_file}"
+else
+    echo "OS ${OS_TYPE}, version ${OS_VERSION} not supported yet, please create ${deps_file}!"
+    exit 1
+fi
+
 
 # build and install
-yum install -y libtool rpm-build make yum-utils
+install_autogen_deps
 ./autogen.sh
-yum-builddep -y singularity.spec
+
+install_configure_deps
 ./configure
 make dist
 rpmbuild -ta *.tar.gz
-yum install -y ~/rpmbuild/RPMS/*/*.rpm
+
+install_rpms
 
 if [ "$OS_VERSION" = 6 ]; then
     echo "the test suite has not yet been ported to centos6 python, skipping."
     exit
 fi
 
-# Install python 3 and pylint
-yum install -y epel-release
-yum install -y python34 python34-pip python34-setuptools docker
-yum install -y pylint
+install_test_deps
 
 # run the test suite
-yum install -y libtool sudo which e2fsprogs
 sed -i 's,^prefix=.*,prefix=/usr,' test.sh
 sed -i 's,^sysconfdir=.*,sysconfdir=/etc,' test.sh
 sed -i 's,^localstatedir=.*,localstatedir=/var,' test.sh
+if [ "$OS_TYPE" = "opensuse" ]; then
+    sed -ri 's,(^libexecdir=.*)/.*,\1/lib",' test.sh
+fi
 useradd --create-home testuser
 echo "Defaults:testuser env_keep=DOCKER_HOST" >>/etc/sudoers
 echo "testuser ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
@@ -36,6 +50,9 @@ echo "testuser ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 sed -i 's,^prefix=.*,prefix=/usr,' secbuildimg.sh
 sed -i 's,^sysconfdir=.*,sysconfdir=/etc,' secbuildimg.sh
 sed -i 's,^localstatedir=.*,localstatedir=/var,' secbuildimg.sh
+if [ "$OS_TYPE" = "opensuse" ]; then
+    sed -ri 's,(^libexecdir=.*)/.*,\1/lib",' secbuildimg.sh
+fi
 make secbuildimg
 
 su testuser -c "make test"

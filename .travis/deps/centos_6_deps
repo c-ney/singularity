@@ -1,0 +1,7 @@
+#!/bin/bash -ex
+
+# this file contains amendments for centos 6
+
+if [[ -e centos_deps ]]; then
+    source centos_deps
+fi
