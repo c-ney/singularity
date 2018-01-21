@@ -6,7 +6,6 @@ rpms_dir='/usr/src/packages/RPMS'
 
 auto_deps=(libtool rpm-build)
 test_deps=(python3 python3-pip python3-setuptools docker
-           python3-pylint
            sudo which e2fsprogs
            curl tar)
 
@@ -24,4 +23,5 @@ install_rpms () {
 
 install_test_deps () {
     zypper install -y --no-recommends ${test_deps[*]}
+    pip3 install pylint
 }

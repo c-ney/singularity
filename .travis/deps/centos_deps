@@ -7,7 +7,6 @@ rpms_dir='/root/rpmbuild/RPMS'
 auto_deps=(libtool rpm-build make yum-utils)
 test_deps=(epel-release
            python34 python34-pip python34-setuptools docker
-           pylint
            sudo which e2fsprogs)
 
 install_autogen_deps () {
@@ -24,4 +23,5 @@ install_rpms () {
 
 install_test_deps () {
     yum install -y ${test_deps[*]}
+    pip3 install pylint
 }
