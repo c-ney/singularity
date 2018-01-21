@@ -7,7 +7,7 @@
 OS_TYPE="$1"
 OS_VERSION="$2"
 
-deps_file="deps/${OS_TYPE}_${OS_VERSION}_deps"
+deps_file=".travis/deps/${OS_TYPE}_${OS_VERSION}_deps"
 
 if [[ -e "${deps_file}" ]]; then
     source "${deps_file}"
