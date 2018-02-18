@@ -39,23 +39,4 @@ fi
 install_test_deps
 
 # run the test suite
-sed -i 's,^prefix=.*,prefix=/usr,' test.sh
-sed -i 's,^sysconfdir=.*,sysconfdir=/etc,' test.sh
-sed -i 's,^localstatedir=.*,localstatedir=/var,' test.sh
-if [ "$OS_TYPE" = "opensuse" ]; then
-    sed -ri 's,(^libexecdir=.*)/.*,\1/lib",' test.sh
-fi
-useradd --create-home testuser
-echo "Defaults:testuser env_keep=DOCKER_HOST" >>/etc/sudoers
-echo "testuser ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
-
-# build image for isolated builds
-sed -i 's,^prefix=.*,prefix=/usr,' secbuildimg.sh
-sed -i 's,^sysconfdir=.*,sysconfdir=/etc,' secbuildimg.sh
-sed -i 's,^localstatedir=.*,localstatedir=/var,' secbuildimg.sh
-if [ "$OS_TYPE" = "opensuse" ]; then
-    sed -ri 's,(^libexecdir=.*)/.*,\1/lib",' secbuildimg.sh
-fi
-make secbuildimg
-
-su testuser -c "make test"
+.travis/testsuite_run
