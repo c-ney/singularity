@@ -1,0 +1,26 @@
+#!/bin/bash -ex
+
+DIST="${OS_TYPE}${OS_VERSION}"
+
+tmp_script="/tmp/$DIST/script"
+cat > "$tmp_script" << SCRIPT
+#!/bin/bash
+export OS_TYPE=$OS_TYPE
+export OS_VERSION=$OS_VERSION
+SCRIPT
+
+case $OS_TYPE in
+    centos|opensuse)
+        echo ".travis/rpmbuild_test" >> "$tmp_script" ;;
+    debian)
+        echo ".travis/debuild_test" >> "$tmp_script" ;;
+    *)
+        echo "container_run: $OS_TYPE not implemented"
+        exit 1 ;;
+esac
+
+cd /tmp/"$DIST"/singularity
+
+# mounting /run for /dev/shm (python multiprocessing)
+sudo singularity exec -w -B /run --keep-privs --allow-setuid docker://${OS_TYPE}:${OS_VERSION} /bin/bash -ex "$tmp_script"
+sudo rm -rf /tmp/"$DIST"

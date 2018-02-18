@@ -4,9 +4,6 @@
 
 # shellcheck source=/dev/null
 
-OS_TYPE="$1"
-OS_VERSION="$2"
-
 deps_file=".travis/deps/${OS_TYPE}_${OS_VERSION}_deps"
 
 if [[ -e "${deps_file}" ]]; then
@@ -16,6 +13,8 @@ else
     exit 1
 fi
 
+echo "%_var /var" > /root/.rpmmacros
+echo "%_dbpath %{_var}/lib/rpm" >> /root/.rpmmacros
 
 # build and install
 install_autogen_deps
