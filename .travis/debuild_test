@@ -20,9 +20,6 @@ mk-build-deps
 mv singularity-container-build-deps_*.deb ..
 gdebi -n ../singularity-container-build-deps_*.deb
 
-# Clean up directory
-make maintainer-clean
-
 # Build package
 debuild -us -uc
 
