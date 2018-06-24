@@ -2,8 +2,6 @@
 
 # this script runs as root under docker 
 
-OS_VERSION="$1"
-
 # Prepare for build
 export DEBIAN_FRONTEND=noninteractive
 export LC_ALL=C
