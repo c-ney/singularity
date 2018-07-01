@@ -1,0 +1,9 @@
+#!/bin/bash -ex
+
+# this file contains amendments for centos 6
+
+centos_deps=".travis/deps/centos_deps"
+
+if [[ -e "${centos_deps}" ]]; then
+    source "${centos_deps}"
+fi
